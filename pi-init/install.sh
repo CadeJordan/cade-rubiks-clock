@@ -142,12 +142,12 @@ if [ "$installhttp" == 'y' ]; then
 ## Web server
     echo installing http service...
 
-    sudo cp $SCRIPT_DIR/rubiks-clock-http.service /lib/systemd/system/
+    sudo cp $SCRIPT_DIR/cade-rubiks-clock-http.service /lib/systemd/system/
     sudo systemctl daemon-reload
-    sudo systemctl enable rubiks-clock-http.service
+    sudo systemctl enable cade-rubiks-clock-http.service
 else
-    sudo systemctl disable rubiks-clock-http.service
-    sudo rm -f /lib/systemd/system/rubiks-clock-http.service
+    sudo systemctl disable cade-rubiks-clock-http.service
+    sudo rm -f /lib/systemd/system/cade-rubiks-clock-http.service
 fi
 
 if [ "$installsplash" == 'y' ]; then
@@ -203,12 +203,12 @@ if [ "$runbrowser" == 'y' ]; then
 
     mkdir -p /home/pi/.config/autostart/
     if [ "$clockstyle" == '24' ]; then
-        cp $SCRIPT_DIR/rubiksclock24.desktop /home/pi/.config/autostart/rubiks-clock.desktop
+        cp $SCRIPT_DIR/rubiksclock24.desktop /home/pi/.config/autostart/cade-rubiks-clock.desktop
     else
-        cp $SCRIPT_DIR/rubiksclock12.desktop /home/pi/.config/autostart/rubiks-clock.desktop
+        cp $SCRIPT_DIR/rubiksclock12.desktop /home/pi/.config/autostart/cade-rubiks-clock.desktop
     fi
 else
-    rm -f /home/pi/.config/autostart/rubiks-clock.desktop 
+    rm -f /home/pi/.config/autostart/cade-rubiks-clock.desktop 
 fi
 
 if [ "$clockstyle" == '24' ]; then
