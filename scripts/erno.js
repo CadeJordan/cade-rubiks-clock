@@ -507,7 +507,14 @@ function applyControls(){
 
 		if( $( '#attributeWireframes' ).prop( 'checked' )) cube.showWireframes()
 		else cube.hideWireframes()
-	}
+	}	
+	if ( $( '#attributeColorChange').prop( 'checked')){
+		$('#container').attr('class', 'mystyle') 
+		}
+	else {
+		$('#container').attr('class', '') 
+		}
+	
 	cube.isShuffling = $( '#actionShuffle' ).prop( 'checked' )
 	cube.isRotating  = $( '#actionRotate'  ).prop( 'checked' )
 	$( '#twist' ).css( 'visibility', $( '#actionNotation' ).prop( 'checked' ) ? 'visible' : 'hidden' )
@@ -609,7 +616,6 @@ function assessTrueFalseMixed( id, count ){
 function loop(){
 	
 	if( document.readyState === 'complete' ){
-
 		erno.stateFrames ++
 		var state = erno.states[ erno.state ]
 		if( state instanceof Function ) state()

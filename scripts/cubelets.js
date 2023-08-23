@@ -141,32 +141,32 @@ function Cubelet( cube, id, colors ){
 		domElement.classList.add( 'cubeletId-'+ this.id )
 		this.wrapper = new THREE.CSS3DObject( domElement )
 	}
-	else if( erno.renderMode === 'svg' ){
+	// else if( erno.renderMode === 'svg' ){
 		
-		this.wrapper = new THREE.Object3D()
+	// 	this.wrapper = new THREE.Object3D()
 
 
-		//  Create this Cubelet's plastic shell.
+	// 	//  Create this Cubelet's plastic shell.
 
-		this.plastic = new THREE.Mesh( 
+	// 	this.plastic = new THREE.Mesh( 
 
-			new THREE.CubeGeometry( cube.cubeletSize, cube.cubeletSize, cube.cubeletSize ),
-			new THREE.MeshBasicMaterial({ color: 0xFFFFFF, vertexColors: THREE.FaceColors })
-		)
-		this.plastic.position.set( x, y, z )
-		this.wrapper.add( this.plastic )
+	// 		new THREE.CubeGeometry( cube.cubeletSize, cube.cubeletSize, cube.cubeletSize ),
+	// 		new THREE.MeshBasicMaterial({ color: 0xFFFFFF, vertexColors: THREE.FaceColors })
+	// 	)
+	// 	this.plastic.position.set( x, y, z )
+	// 	this.wrapper.add( this.plastic )
 
 
-		//  Wireframe!
+	// 	//  Wireframe!
 
-		this.wireframe = new THREE.Mesh( 
+	// 	this.wireframe = new THREE.Mesh( 
 
-			new THREE.CubeGeometry( cube.cubeletSize, cube.cubeletSize, cube.cubeletSize ),
-			new THREE.MeshBasicMaterial({ color: 0x00CCFF, wireframe: true })
-		)
-		this.wireframe.position.set( x, y, z )
-		this.wrapper.add( this.wireframe )
-	}
+	// 		new THREE.CubeGeometry( cube.cubeletSize, cube.cubeletSize, cube.cubeletSize ),
+	// 		new THREE.MeshBasicMaterial({ color: 0x00CCFF, wireframe: true })
+	// 	)
+	// 	this.wireframe.position.set( x, y, z )
+	// 	this.wrapper.add( this.wireframe )
+	// }
 	this.wrapper.name = 'wrapper-' + this.id
 	this.wrapper.position.set( x, y, z )
 	this.anchor.add( this.wrapper )
@@ -313,8 +313,8 @@ function Cubelet( cube, id, colors ){
 				//  the most frustrating toy ever.
 
 				var stickerElement = document.createElement( 'div' )
-				stickerElement.classList.add( 'sticker' )			
-				stickerElement.style.backgroundColor = color.hex
+				stickerElement.classList.add( 'sticker', color.bgClass )			
+				//stickerElement.style.backgroundColor = color.hex
 				faceElement.appendChild( stickerElement )
 
 				// put the logo on the white middle sticker

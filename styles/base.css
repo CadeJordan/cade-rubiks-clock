@@ -785,5 +785,39 @@ textarea#texts {
 	font-size: 24px;
 }
 
-
-
+.mystyle .color1 {
+	background-color: #bbf;
+}
+.mystyle .color2 {
+	background-color: #fb0;
+}
+.mystyle .color3 {
+	background-color: #f9f;
+}
+.mystyle .color4 {
+	background-color: #8ff;
+}
+.mystyle .color5 {
+	background-color: #bfb;
+}
+.mystyle .color6 {
+	background-color: #ff8;
+}
+.color1 {
+	background-color: #FFF;
+}
+.color2 {
+	background-color: #F60;
+}
+.color3 {
+	background-color: #00D;
+}
+.color4 {
+	background-color: #F00;
+}
+.color5 {
+	background-color: #0A0;
+}
+.color6 {
+	background-color: #FE0;
+}

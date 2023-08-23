@@ -125,11 +125,11 @@ function Cube( preset ){
 
 
 	// The smaller the zoom value the bigger the cube will appear
-	this.zoomSizeTiny = 6000
-	this.zoomSizeSmall = 3000
-	this.zoomSizeDefault = 1500
-	this.zoomSizeBig = 1200
-	this.zoomSizeGiant = 900
+	this.zoomSizeTiny = 2000
+	this.zoomSizeSmall = 1300
+	this.zoomSizeDefault = 900
+	this.zoomSizeBig = 700
+	this.zoomSizeGiant = 400
 
 	this.defaultClockIs24 = defaultClockIs24  || false // from defaults.js set to true if you want 24-hour clock as default preset
 
@@ -139,28 +139,6 @@ function Cube( preset ){
 	this.zoom = this.zoomSizeDefault
 
 
-	//  We need to create and setup a new CSS3 Object
-	//  to represent our Cube. 
-	//  THREE will take care of attaching it to the DOM, etc.
-
-	if( erno.renderMode === 'css' ){
-	
-		this.domElement = document.createElement( 'div' )
-		this.domElement.classList.add( 'cube' )
-		this.threeObject = new THREE.CSS3DObject( this.domElement )
-	}
-	else if( erno.renderMode === 'svg' ){
-
-		this.threeObject = new THREE.Object3D()
-	}
-	this.threeObject.rotation.set(
-
-		(  25 ).degreesToRadians(), 
-		( -30 ).degreesToRadians(),
-		0
-	)
-	scene.add( this.threeObject )
-
 
 	//  If we enable Auto-Rotate then the cube will spin (not twist!) in space
 	//  by adding the following values to the Three object on each frame.
@@ -169,17 +147,50 @@ function Cube( preset ){
 	this.rotationDeltaY = 0.15
 	this.rotationDeltaZ = 0
 
+	this.setColors = function() {
+		//  We need to create and setup a new CSS3 Object
+		//  to represent our Cube. 
+		//  THREE will take care of attaching it to the DOM, etc.
+
+		if (this.domElement) {
+			this.domElement.remove()
+
+			scene.children.forEach(child => { scene.remove(child) })
+		}
+
+		if( erno.renderMode === 'css' ){
+		
+			this.domElement = document.createElement( 'div' )
+			this.domElement.classList.add( 'cube' )
+			this.threeObject = new THREE.CSS3DObject( this.domElement )
+		}
+		else if( erno.renderMode === 'svg' ){
+
+			this.threeObject = new THREE.Object3D()
+		}
+		this.threeObject.rotation.set(
+
+			(  25 ).degreesToRadians(), 
+			( -30 ).degreesToRadians(),
+			0
+		)
+		scene.add( this.threeObject )
 
 
+		if (Array.isArray(this.cubelets)) {
+			this.cubelets.forEach((cubelet) => {
+				cubelet.hide()
+			})
+		}
 
-	//  Here's the first big map we've come across in the program so far. 
-	//  Imagine you're looking at the Cube straight on so you only see the front face.
-	//  We're going to map that front face from left to right (3), and top to bottom (3): 
-	//  that's 3 x 3 = 9 Cubelets.
-	//  But then behind the Front slice we also have a Standing slice (9) and Back slice (9),
-	//  so that's going to be 27 Cubelets in total to create a Cube.
+		//  Here's the first big map we've come across in the program so far. 
+		//  Imagine you're looking at the Cube straight on so you only see the front face.
+		//  We're going to map that front face from left to right (3), and top to bottom (3): 
+		//  that's 3 x 3 = 9 Cubelets.
+		//  But then behind the Front slice we also have a Standing slice (9) and Back slice (9),
+		//  so that's going to be 27 Cubelets in total to create a Cube.
 
-	this.cubelets = []
+		this.cubelets = []
 	;([
 
 		//  Front slice
@@ -208,61 +219,81 @@ function Cube( preset ){
 	})
 
 
-	//  Mapping the Cube creates all the convenience shortcuts
-	//  that we will need later. (Demonstrated immediately below!)
+		//[ LP, LO,  ,  , LG,   ],    [ LP, LO,  ,  ,  ,   ],    [ LP, LO, LB,  ,  ,   ],//   0,  1,  2
+		//[ LP,  ,  ,  , LG,   ],    [ LP,  ,  ,  ,  ,   ],    [ LP,  , LB,  ,  ,   ],//   3,  4,  5
+		//[ LP,  ,  , P, LG,   ],    [ LP,  ,  , P,  ,   ],    [ LP,  , LB, P,  ,   ],//   6,  7,  8
 
-	this.map()
+
+		//  Standing slice
+
+		//[  , LO,  ,  , LG,   ],    [  , LO,  ,  ,  ,   ],    [  , LO, LB,  ,  ,   ],//   9, 10, 11
+		//[  ,  ,  ,  , LG,   ],    [  ,  ,  ,  ,  ,   ],    [  ,  , LB,  ,  ,   ],//  12, XX, 14
+		//[  ,  ,  , P, LG,   ],    [  ,  ,  , P,  ,   ],    [  ,  , LB, P,  ,   ],//  15, 16, 17
 
 
-	//  Now that we have mapped faces we can create faceLabels
+		//  Back slice
 
-	if( erno.renderMode === 'css' ){
+		//[  , LO,  ,  , LG, LY ],    [  , LO,  ,  ,  , LY ],    [  , LO, LB,  ,  , LY ],//  18, 19, 20
+		//[  ,  ,  ,  , LG, LY ],    [  ,  ,  ,  ,  , LY ],    [  ,  , LB,  ,  , LY ],//  21, 22, 23
+		//[  ,  ,  , P, LG, LY ],    [  ,  ,  , P,  , LY ],    [  ,  , LB, P,  , LY ] //  24, 25, 26
+		//  Mapping the Cube creates all the convenience shortcuts
+		//  that we will need later. (Demonstrated immediately below!)
+		this.map()
 
-		this.faces.forEach( function( face, i ){
 
-			var labelElement = document.createElement( 'div' )
-			labelElement.classList.add( 'faceLabel' )
-			labelElement.classList.add( 'face'+ face.face.capitalize() )
-			labelElement.innerHTML = face.face.toUpperCase()
-			cube.domElement.appendChild( labelElement )
-		})
+		//  Now that we have mapped faces we can create faceLabels
+
+		if( erno.renderMode === 'css' ){
+
+			this.faces.forEach( function( face, i ){
+
+				var labelElement = document.createElement( 'div' )
+				labelElement.classList.add( 'faceLabel' )
+				labelElement.classList.add( 'face'+ face.face.capitalize() )
+				labelElement.innerHTML = face.face.toUpperCase()
+				cube.domElement.appendChild( labelElement )
+			})
+		}
+
+
+		//  We need to map our folds separately from Cube.map()
+		//  because we only want folds mapped at creation time.
+		//  Remapping folds with each Cube.twist() would get weird...
+
+		this.folds = [
+
+			new Fold( this.front, this.right ),
+			new Fold( this.left,  this.up    ),
+			new Fold( this.down,  this.back  )
+		]
+
+
+		//  Enable some "Hero" text for this Cube.
+		
+		if( erno.renderMode === 'css' ){
+
+			this.setText( 'BEYONDRUBIKs  CUBE', 0 )
+			this.setText( 'BEYONDRUBIKs  CUBE', 1 )
+			this.setText( 'BEYONDRUBIKs  CUBE', 2 )
+		}
+		//  Shall we load some presets here?
+
+		preset = 'preset' + preset.capitalize()
+		//if( this[ preset ] instanceof Function === false ) preset = 'presetBling'
+		if( this[ preset ] instanceof Function === false ) preset = 'presetClock'
+		this[ preset ]()
+
+		//  Get ready for major loop-age.
+		//  Our Cube checks these booleans at roughly 60fps.
+
+		if (this.loopInterval) clearInterval(this.loopInterval)
+		this.loopInterval = setInterval( cube.loop, 16 )
+
 	}
 
 
-	//  We need to map our folds separately from Cube.map()
-	//  because we only want folds mapped at creation time.
-	//  Remapping folds with each Cube.twist() would get weird...
+	this.setColors()
 
-	this.folds = [
-
-		new Fold( this.front, this.right ),
-		new Fold( this.left,  this.up    ),
-		new Fold( this.down,  this.back  )
-	]
-
-
-	//  Enable some "Hero" text for this Cube.
-	
-	if( erno.renderMode === 'css' ){
-
-		this.setText( 'BEYONDRUBIKs  CUBE', 0 )
-		this.setText( 'BEYONDRUBIKs  CUBE', 1 )
-		this.setText( 'BEYONDRUBIKs  CUBE', 2 )
-	}
-
-
-	//  Shall we load some presets here?
-
-	preset = 'preset' + preset.capitalize()
-	//if( this[ preset ] instanceof Function === false ) preset = 'presetBling'
-	if( this[ preset ] instanceof Function === false ) preset = 'presetClock'
-	this[ preset ]()
-
-
-	//  Get ready for major loop-age.
-	//  Our Cube checks these booleans at roughly 60fps.
-
-	setInterval( cube.loop, 16 )
 
 
 	//  Enable key commands for our Cube.

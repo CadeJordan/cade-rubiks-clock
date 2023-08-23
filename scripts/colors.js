@@ -23,11 +23,12 @@
 
 
 
-function Color( name, initial, hex, styleF, styleB ){
+function Color( name, initial, hex, bgClass, styleF, styleB ){
 
 	this.name    = name
 	this.initial = initial
 	this.hex     = hex
+	this.bgClass = bgClass
 	this.styleF  = styleF
 	this.styleB  = styleB
 }
@@ -41,6 +42,7 @@ W = WHITE = new Color(
 	'white',
 	'W',
 	'#FFF',
+	'color1',
 	'font-weight: bold; color: #888',
 	'background-color: #F3F3F3; color: rgba( 0, 0, 0, 0.5 )'
 ),
@@ -49,6 +51,7 @@ O = ORANGE = new Color(
 	'orange',
 	'O',
 	'#F60',
+	'color2',
 	'font-weight: bold; color: #F60',
 	'background-color: #F60; color: rgba( 255, 255, 255, 0.9 )'
 ),
@@ -57,6 +60,7 @@ B = BLUE = new Color(
 	'blue',
 	'B',
 	'#00D',
+	'color3',
 	'font-weight: bold; color: #00D',
 	'background-color: #00D; color: rgba( 255, 255, 255, 0.9 )'
 ),
@@ -65,6 +69,7 @@ R = RED = new Color(
 	'red',
 	'R',
 	'#F00',
+	'color4',
 	'font-weight: bold; color: #F00',
 	'background-color: #F00; color: rgba( 255, 255, 255, 0.9 )'
 ),
@@ -73,6 +78,7 @@ G = GREEN = new Color(
 	'green',
 	'G',
 	'#0A0',
+	'color5',
 	'font-weight: bold; color: #0A0',
 	'background-color: #0A0; color: rgba( 255, 255, 255, 0.9 )'
 ),
@@ -81,6 +87,7 @@ Y = YELLOW = new Color(
 	'yellow',
 	'Y',
 	'#FE0',
+	'color6',
 	'font-weight: bold; color: #ED0',
 	'background-color: #FE0; color: rgba( 0, 0, 0, 0.5 )'
 ),
@@ -89,6 +96,7 @@ COLORLESS = new Color(
 	'NA',
 	'X',
 	'#DDD',
+	'colorless',
 	'color: #EEE',
 	'color: #DDD'
 )
